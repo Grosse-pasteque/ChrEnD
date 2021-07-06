@@ -26,8 +26,6 @@ def decrypt(text: str, turns=1, modifier='self'):
 				.replace('self', char)\
 				.replace('word', repr(org_text))
 
-			print(repr(expression), repr(eval(expression)))
-
 			decrypted += chr(int(eval(expression)))
 		
 		text = decrypted.split('.')
