@@ -1,6 +1,6 @@
-# Chr - EnD [0.4.0]
+# Chr - EnD [0.5.0]
 
-## By Grosse pastèque#6705
+## By Big watermelon#6705
 
 -------------
 
@@ -9,8 +9,8 @@
 
 Python can transform letter to their index which is inside of the utf-8 table
 ```py
-ord('a') 	-> 97
-chr(97)		-> 'a'
+ord('a')     -> 97
+chr(97)      -> 'a'
 ```
 
 Simplified explainations:
@@ -19,7 +19,7 @@ Simplified explainations:
 ```py
 text = list(text)
 
-'hello' -> ['h', 'e', 'l', 'l', 'o']
+"hello" -> ['h', 'e', 'l', 'l', 'o']
 ```
 
 2) each char -> ord(char)
@@ -27,40 +27,74 @@ text = list(text)
 ord('h') -> 104
 ```
 
-3) return joined text
+3) apply mathematical operations on the obtained number with modifiers
+```py
+104 -> 108 (+4)
+```
+
+4) return joined text
 ```py
 '.'.join(text)
 
-['104', '101', '108', '108', '111'] -> '104.101.108.108.111'
+["108", "105", "112", "112", "116"] -> "108.105.112.112.116"
 ```
 
-4) repeat 1, 2, 3 for number of required turns
+5) repeat 1, 2, 3 and 4 for number of required turns
 
 
 -------------
 
 
-### Usage:
+### Functions:
 
-You have at your disposition two function:
-- **ChrEnD.encrypt()**
-- **ChrEnD.decrypt()**
+You have at your disposition these function:
+- **seed**
+- **encrypt**
+- **decrypt**
+- **transform**
+- **untransform**
+- **combinations**
 
 ```py
-import ChrEnD
+import chrend
 
-encrypted = ChrEnD.encrypt('hello')
-encrypted = ChrEnD.decrypt(encrypted)
+# all the allowed (operators, values): chrend.OPERATORS, chrend.CONV
+seed = chrend.seed(turns=1, modifiers=[("+", "%l"), ("*", 2)])
+print(seed)
 
-print(encrypted)
-print(decrypted)
+
+encrypted = chrend.encrypt('hello ma boi :)', seed=seed)
+print(repr(encrypted))
+
+tencrypted = chrend.transform(encrypted)
+print(repr(tencrypted))
+
+encrypted = chrend.untransform(tencrypted)
+print(repr(encrypted))
+
+decrypted = chrend.decrypt(encrypted, seed=seed)
+print(repr(decrypted))
 ```
 
-##### Arguments
+##### Seeds
 
-| argument  | type  | default (None = not default)  | explainations  |
-| ------------ | ------------ | ------------ | ------------ |
-| text  | *str* | None  | The text that you want to encrypt.  |
-| turns  | *int*  | 1  | Text will be encrypted in loop in range(turns).  |
-| modifier  | *str*  | 'self'  | If you want to execute modification on the `ord(char)`, `self` corespond to the number, `word` to the original word. his modifier will be passed into `eval()`.  |
-| get_layers  | *bool*  | False  | Return the encrypted/decrypted text and all the layers of the text.  |
+Seeds works like in minecraft:
+
+But be careful, modifiers are math operations so one modifier can be equal to another.
+Example bellow
+
+```py
+import chrend
+
+seed_one = chrend.seed(turns=1, modifiers=[("<<", 4)])
+# 0x1a4b5
+
+seed_two = chrend.seed(turns=3, modifiers=[("*", 16)])
+# 0x1a16b2
+
+encrypted_one = chrend.encrypt('text', seed=seed_one)
+encrypted_two = chrend.encrypt('text', seed=seed_two)
+
+print(encrypted_one == encrypted_two)
+# shows: True
+```
