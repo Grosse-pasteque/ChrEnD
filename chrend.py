@@ -18,11 +18,11 @@ OPERATORS = {
     # "%", "//", "&", "|" -> ignored
 }
 
-ModifiersType = Optional[List[Tuple[str, Union[int, str]]]]
+ModifiersType = List[Tuple[str, Union[int, str]]]
 
 
 def seed(
-    turns:     Optional[int] = 0,
+    turns:     int = 0,
     modifiers: ModifiersType = []
 ):
     s = str(turns)
@@ -59,8 +59,8 @@ def invert(modifiers: list):
 def apply_mod(
     chro:      int,
     modifiers: ModifiersType = [],
-    word_len:  Optional[int] = 0,
-    last_chro: Optional[int] = 0
+    word_len:  int = 0,
+    last_chro: int = 0
 ):
     conv = {"d": chro, "e": word_len, "f": last_chro}
     for op, n in modifiers:
@@ -88,9 +88,9 @@ def untransform(text: str):
 
 def encrypt(
     text:       str, 
-    turns:      Optional[int] = 0,
+    turns:      int = 0,
     modifiers:  ModifiersType = [],
-    get_layers: Optional[bool] = False,
+    get_layers: bool = False,
     seed:       Optional[Union[str, int]] = None
 ):
     if seed:
@@ -126,10 +126,10 @@ def encrypt(
 
 def decrypt(
     text:       str,
-    turns:      Optional[int] = 0,
+    turns:      int = 0,
     modifiers:  ModifiersType = [],
-    get_layers: Optional[bool] = False,
-    seed:       Optional[Union[str, int]] = None
+    get_layers: bool = False,
+    seed:       Union[str, int] = None
 ):
     if seed:
         turns, modifiers = unseed(seed)
@@ -163,8 +163,8 @@ def decrypt(
 
 
 def combinations(
-    turns:         Optional[int] = 1,
-    nmodifiers:    Optional[int] = 0,
-    encoding_size: Optional[int] = 128
+    turns:         int = 1,
+    nmodifiers:    int = 0,
+    encoding_size: int = 128
 ):
     return (((encoding_size + 3) * len(OPERATORS))) ** nmodifiers * turns
